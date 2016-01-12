@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  SecondViewController.swift
 //  Track
 //
 //  Created by Aaron Schubert on 08/01/2016.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: RoutableViewController {
+class SecondViewController: RoutableViewController {
 
     let button = UIButton(type: .System)
     
@@ -19,35 +19,32 @@ class ViewController: RoutableViewController {
         button.addTarget(self, action: "next", forControlEvents: .TouchUpInside)
         view.addSubview(button)
         view.backgroundColor = UIColor.whiteColor()
-        title = "First"
+        title = "Second"
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view, typically from a nib.
     }
-
+    
     func next() {
-        recorder.recordAction(Action(identifier: self.identifier, action: ViewControllerActions.Next, delay: true))
-        self.navigationController?.pushViewController(SecondViewController(), animated: true)
+        recorder.recordAction(Action(identifier: self.identifier, action: SecondViewControllerActions.Next, delay: true))
+        self.navigationController?.pushViewController(ViewController(), animated: true)
     }
 
-    //MARK: Replay
     override func replayAction(action: Action) {
-        if action.action == ViewControllerActions.Next {
+        if action.action == SecondViewControllerActions.Next {
             next()
         }
         else if action.action == GlobalActions.Pop {
             self.navigationController?.popViewControllerAnimated(true)
         }
         else {
-            //THROW
             NSException(name: "Can't replay Action", reason: "\(self.identifier) doesn't have replay support for the \(action.action) action", userInfo: nil).raise()
         }
     }
 }
-
